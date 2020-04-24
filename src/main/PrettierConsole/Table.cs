@@ -85,9 +85,7 @@ namespace PrettierConsole {
             return sb.ToString();
         }
 
-        string MakeCell(string title, int length) {
-            return title.PadRight(length, ' ');
-        }
+        string MakeCell(string title, int length) => $" {title}".PadRight(length, ' ');
 
         string Separator(int separatorCount, int padLength) {
             //  +-----------+-----------+-----------+

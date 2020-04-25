@@ -1,5 +1,5 @@
 
-PrettierConsole takes a data structure and format it nicely for printing on the console or any output
+PrettierConsole takes a data structure, format it nicely for printing to console or any output
 
 
 ```csharp

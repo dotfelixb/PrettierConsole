@@ -10,7 +10,7 @@ var data = new [] {
     new { Release = 2006, Album = "Zombies! Aliens! Vampires! Dinosaurs!", Songs = 11, Rating = "* * *", }
 };
 
-Console.WriteLine(data.ToPrettierTable());
+Console.WriteLine(data.ToPrettierTable(separator: true));
 ```
 Outputs:
 

@@ -5,29 +5,28 @@ using System.Linq;
 namespace PrettierConsole {
     public static class TableEx {
         public static int[] ToColumnLength<T>(this Table<T> table) {
-            // get table record 
-
-            var r = table.Record.First();
-            var p = r.GetType().GetProperties();
-            var len = p.Length;
-            var arr = new int[len];
+            // for array size just check the first rows for column
+            var arr = new int[typeof(T).GetProperties().Length];
+            var props = typeof(T).GetProperties();
 
             foreach (var elm in table.Record) {
-                var props = elm.GetType().GetProperties();
-                // get header len
                 for (int i = 0; i < props.Length; i++) {
-                    var nameLength = props[i].Name.Length + 2;
-                    var ps = props[i].GetValue(elm).ToString().Length + 2;
+                    // for the property itself ie column header
+                    var headerLen = props[i].Name.Length + 2;
 
-                    arr[i] = nameLength > ps ? nameLength > arr[i] ? nameLength : arr[i] : ps > arr[i] ? ps : arr[i];
+                    // for property value ie cell
+                    var cellLen = props[i].GetValue(elm).ToString().Length + 2;
+
+                    arr[i] = headerLen > cellLen ?
+                        (headerLen > arr[i] ? headerLen : arr[i]) :
+                        (cellLen > arr[i] ? cellLen : arr[i]);
                 }
             }
 
             return arr;
         }
 
-        public static List<string[]> ToBody<T>(this Table<T> table) {
-            var outer = new List<string[]>();
+        public static IEnumerable<IEnumerable<string>> ToBody<T>(this Table<T> table) {
             var inner = new List<string>();
 
             foreach (var r in table.Record) {
@@ -35,20 +34,18 @@ namespace PrettierConsole {
                 foreach (var p in props) {
                     inner.Add(p.GetValue(r).ToString());
                 }
-                outer.Add(inner.ToArray());
+
+                yield return inner;
                 inner.Clear();
             }
-            return outer;
         }
 
-        public static string[] ToHeaderTitle<T>(this Table<T> table) {
+        public static IEnumerable<string> ToHeaderTitle<T>(this Table<T> table) {
             var r = table.Record.First();
-            var titlesList = new List<string>();
             var props = r.GetType().GetProperties();
             foreach (var p in props) {
-                titlesList.Add(p.Name);
+                yield return p.Name;
             }
-            return titlesList.ToArray();
         }
 
         static string ToCapitalizeFirstLetter(this string value) {
@@ -61,12 +58,6 @@ namespace PrettierConsole {
             toArray[0] = char.Parse(first);
 
             return string.Join("", toArray);
-        }
-
-        static IEnumerable<T> LengthIterator<T>(this IEnumerable<T> source, Action<T> predicate) {
-            foreach (var elm in source) {
-                yield return elm;
-            }
         }
     }
 }

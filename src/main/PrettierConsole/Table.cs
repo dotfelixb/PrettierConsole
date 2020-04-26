@@ -9,7 +9,7 @@ namespace PrettierConsole {
 
         StringBuilder sb;
         const char DASH = '-';
-        const char PIPE = '|';
+        const char PIPE = '¦';
         const char CROSS = '+';
         public Table(IEnumerable<T> record, bool separator) {
             Record = record ??
@@ -62,11 +62,9 @@ namespace PrettierConsole {
                     sb.Append(PIPE);
                 }
                 sb.Append("\n");
-                if (separator) { sb.AppendLine(sep); }
+                if (separator) { sb.Append(sep); }
             }
-            if (!separator) {
-                sb.AppendLine(sep);
-            }
+            if (!separator) { sb.Append(sep); }
             return sb;
         }
 
@@ -74,30 +72,31 @@ namespace PrettierConsole {
             var sb = new StringBuilder(capacity: 256);
             var titlesCount = titles.Count();
             var sep = MakeSeparator(titlesCount, lengths);
-            sb.AppendLine(sep);
+            sb.Append(sep);
             sb.Append(PIPE);
             for (var i = 0; i < titlesCount; i++) {
                 sb.Append(MakeCell(titles.ElementAt(i), lengths[i]));
                 sb.Append(PIPE);
             }
             sb.Append("\n");
-            sb.AppendLine(sep);
+            sb.Append(sep);
 
             return sb;
         }
 
         string MakeCell(string title, int length) => $" {title} ".PadRight(length, ' ');
 
-        string MakeSeparator(int separatorCount, int[] padLengths) {
+        StringBuilder MakeSeparator(int separatorCount, int[] padLengths) {
             //  +-----------+-----------+-----------+
             var sb = new StringBuilder(capacity: 128);
 
             for (int i = 0; i < separatorCount; i++) {
-                sb.Append($"+{string.Empty.PadRight(padLengths[i], DASH)}");
+                sb.Append($"{CROSS}{string.Empty.PadRight(padLengths[i], DASH)}");
             }
             sb.Append(CROSS);
+            sb.AppendLine();
 
-            return sb.ToString();
+            return sb;
         }
     }
 }

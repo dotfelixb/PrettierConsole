@@ -13,7 +13,7 @@ namespace PrettierExample {
                 new { Release = 2006, Album = "Zombies! Aliens! Vampires! Dinosaurs!", Songs = 11, Rating = "* * *", }
             };
 
-            WriteLine(data.ToPrettierTable());
+            WriteLine(data.ToPrettierTable(separator: false));
         }
     }
 

@@ -44,7 +44,7 @@ namespace PrettierConsole {
             var r = table.Record.First();
             var props = r.GetType().GetProperties();
             foreach (var p in props) {
-                yield return p.Name;
+                yield return p.Name; // .ToCapitalizeFirstLetter();
             }
         }
 

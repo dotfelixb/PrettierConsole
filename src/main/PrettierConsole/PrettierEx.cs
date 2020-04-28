@@ -3,7 +3,8 @@
 namespace PrettierConsole {
     public static class PrettierEx {
 
-        public static Table<T> ToPrettierTable<T>(this IEnumerable<T> list, bool separator = false) => new Table<T>(list, separator);
-            
+        public static Table<T> ToPrettierTable<T>(this IEnumerable<T> record, bool separator = false) => new Table<T>(record, separator);
+
+        public static Numbered<T> ToPrettierList<T>(this IEnumerable<T> record, bool bulleted = false) => new Numbered<T>(record, bulleted);
     }
 }
